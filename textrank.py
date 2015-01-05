@@ -28,7 +28,7 @@ def normalize(sentence):
 	filtered_words = [w for w in tokens if not w in stopwords.words('english')]
 	return " ".join(filtered_words)
 
-def textrank(sentences):
+def textrank():
 	for sentence in sentences:
 		sentence = normalize(sentence)
 	matrix = CountVectorizer().fit_transform(sentences)
@@ -40,10 +40,13 @@ def textrank(sentences):
 
 	return sorted(((scores[i], s) for i, s in enumerate(sentences)), reverse=True)
 
-if __name__ == '__main__':
-	summary_list = zip(*textrank(sentences))[1]
+def summarize():
+	summary_list = zip(*textrank())[1]
 	summary = ''
 	for i in xrange(len(summary_list)):
 		if len(summary) < word_count:
 			summary += '  ' + summary_list[i]
 	print summary
+
+if __name__ == '__main__':
+	summarize()
