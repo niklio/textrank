@@ -11,6 +11,8 @@ from sklearn.feature_extraction.text import TfidfTransformer
 
 tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
 
+word_count = 100
+
 sentences = []
 for arg in sys.argv[1:]:
 	try:
@@ -35,4 +37,10 @@ def textrank(sentences):
 
 	return sorted(((scores[i], s) for i, s in enumerate(sentences)), reverse=True)
 
-print textrank(sentences)
+if __name__ == '__main__':
+	summary_list = zip(*textrank(sentences))[1]
+	summary = ''
+	for i in xrange(len(summary_list)):
+		if len(summary) < word_count:
+			summary += summary_list[i]
+	print summary
