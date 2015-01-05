@@ -5,13 +5,14 @@ import networkx as nx
 import numpy as np
 from nltk.tokenize import RegexpTokenizer
 from nltk.corpus import stopwords
+from nltk.stem.wordnet import WordNetLemmatizer
 from collections import Counter
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
 
 tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
 
-word_count = 100
+word_count = 400
 
 sentences = []
 for arg in sys.argv[1:]:
@@ -28,6 +29,8 @@ def normalize(sentence):
 	return " ".join(filtered_words)
 
 def textrank(sentences):
+	for sentence in sentences:
+		sentence = normalize(sentence)
 	matrix = CountVectorizer().fit_transform(sentences)
 	normalized = TfidfTransformer().fit_transform(matrix)
 	similarity_graph = normalized * normalized.T
@@ -42,5 +45,5 @@ if __name__ == '__main__':
 	summary = ''
 	for i in xrange(len(summary_list)):
 		if len(summary) < word_count:
-			summary += summary_list[i]
+			summary += '  ' + summary_list[i]
 	print summary
